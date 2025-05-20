@@ -4,7 +4,7 @@ from latex import (
     generate_newton_latex_table,
     generate_simple_iter_latex_table,
 )
-from plotter import plot_bisection, plot_newton, plot_simple_iteration
+from plotter import plot_bisection, plot_graph, plot_newton, plot_simple_iteration
 from zero_finder import ZeroFinder
 
 
@@ -90,6 +90,7 @@ if __name__ == "__main__":
     interval = get_interval()
     epsilon = get_epsilon()
     zero_finder = ZeroFinder(f, df, interval, "output/")
+    plot_graph(zero_finder, "output/graph_plot.png")
 
     try:
         print("\nRunning Bisection method:")

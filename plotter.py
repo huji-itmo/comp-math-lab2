@@ -177,44 +177,59 @@ import matplotlib.pyplot as plt
 import os
 
 
-def plot_system(solver: SystemSolver):
+def plot_system(output_dir, F):
+    # Generate a grid of x and y values
+    x_vals = np.linspace(-5, 5, 400)
+    y_vals = np.linspace(-5, 5, 400)
+    X, Y = np.meshgrid(x_vals, y_vals)
 
-    # Define the domain for x0 and x1
-    x0_values = np.linspace(-2, 2, 400)
-    x1_values = np.linspace(-2, 2, 400)
+    # Evaluate the system of equations on the grid
+    Z = F([X, Y])  # F should be vectorized
+    Z1, Z2 = Z[0], Z[1]  # Extract the two equations
 
-    # Create a meshgrid for evaluating the functions over the domain
-    X, Y = np.meshgrid(x0_values, x1_values)
-
-    # Evaluate the two components of the system on the grid
-    Z1 = lambda x: solver.F(x)[0]
-    Z2 = lambda x: solver.F(x)[1]  # Second equation
-
-    # Create a new figure for the plot
+    # Create the plot
     plt.figure(figsize=(8, 6))
+    contour1 = plt.contour(X, Y, Z1, levels=[0], colors="red")
+    contour2 = plt.contour(X, Y, Z2, levels=[0], colors="blue")
 
-    # Plot the zero-level contour for the first equation in red
-    contour1 = plt.contour(X, Y, Z1, levels=[0], colors="r", linewidths=2)
-
-    # Plot the zero-level contour for the second equation in blue
-    contour2 = plt.contour(X, Y, Z2, levels=[0], colors="b", linewidths=2)
-
-    # Add axis labels and title
-    plt.xlabel("x0")
-    plt.ylabel("x1")
-    plt.title("System of Equations:\n")
-    # Enable grid and set equal scaling for both axes
+    # Add titles and labels
+    plt.xlabel("x[0]")
+    plt.ylabel("x[1]")
+    plt.title("System of Equations: Zero-Level Contours")
     plt.grid(True)
-    plt.axis("equal")
 
-    # Ensure the directory exists
-    os.makedirs(solver.output_dir, exist_ok=True)
+    # Ensure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+    plot_path = os.path.join(output_dir, "system_plot.png")
 
-    # Define the file path for saving the plot
-    plot_path = os.path.join(solver.output_dir, "system_plot.png")
+    # Save and close the plot
+    plt.savefig(plot_path)
+    plt.close()
 
-    # Save the plot to the specified directory
-    plt.savefig(plot_path, dpi=300)
 
-    # Close the plot to free up memory
+def plot_graph(zero_finder: ZeroFinder, output_path: str):
+    """
+    Plot the function over the interval [a, b], and optionally mark the root.
+    If a plot path is provided, the plot is saved to that location.
+    """
+    # Generate x values from a to b
+    x = np.linspace(zero_finder.a, zero_finder.b, 400)
+    y = [zero_finder.func(xi) for xi in x]
+
+    # Create the plot
+    plt.figure(figsize=(8, 5))
+    plt.plot(x, y, label="f(x)", color="blue")
+    plt.axhline(0, color="black", linestyle="--", linewidth=0.5)
+
+    plt.legend()
+    plt.title("Function Plot with Root")
+    plt.xlabel("x")
+    plt.ylabel("f(x)")
+
+    # Save the plot if a path is provided
+    if output_path:
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        plt.savefig(output_path)
+        print(f"Plot saved to {output_path}")
     plt.close()

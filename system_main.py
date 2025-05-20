@@ -32,7 +32,7 @@ systems = [
     },
     {
         "id": 4,
-        "name": "sin(x+y) = 1.5x -0.1; x² + 2y² =1",
+        "name": "sin(x-1) + y = 0.5; x - cos(y) = 3",
         "F": lambda x: np.array(
             [np.cos(x[0] - 1) + x[1] - 0.5, x[0] - np.cos(x[1]) - 3]
         ),
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
         # Plot convergence
         plot_newton_system(system_solver)
-        # plot_system(system_solver)
+        plot_system("output/", system_solver.F)
 
     except RuntimeError as e:
         print(f"Error during Newton's method: {e}")
