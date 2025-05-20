@@ -78,3 +78,39 @@ def generate_simple_iter_latex_table(zero_finder: ZeroFinder):
 
     latex.append(r"\end{tabular}")
     return "\n".join(latex)
+
+
+def generate_newton_system_latex_table(solver):
+    """
+    Generate a LaTeX table for Newton's method iterations.
+
+    Parameters:
+    - solver: Instance of SystemSolver after running Newton's method
+
+    Returns:
+    - LaTeX string representation of the table
+    """
+    iterations = solver.iterations
+    n_vars = len(solver.initial_guess)
+
+    # Start LaTeX table
+    latex = (
+        "\\begin{table}[H]\n\\centering\n\\begin{tabular}{|c|"
+        + "c|" * n_vars
+        + "c|c|}\n\\hline\n"
+    )
+    latex += "Iteration"
+
+    for var_idx in range(n_vars):
+        latex += f" & x_{var_idx + 1}"
+
+    latex += " & $\\|\\Delta x\\|$ & $\\|F(x)\\|$ \\\\ \\hline\n"
+
+    # Add rows
+    for iter_data in iterations:
+        latex += f"{iter_data['iteration']} & "
+        x_values = " & ".join(f"{xi:.6f}" for xi in iter_data["x"])
+        latex += f"{x_values} & {iter_data['delta_norm']:.3e} & {iter_data['f_norm']:.3e} \\\\ \\hline\n"
+
+    latex += "\\end{tabular}\n\\caption{Newton's Method Iterations for System of Equations}\n\\end{table}"
+    return latex

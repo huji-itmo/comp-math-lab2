@@ -29,7 +29,10 @@ class ZeroFinder:
                     {"left": a, "right": b, "mid": c, "f_mid": fc}
                 )
 
-            if abs(fc) < tolerance or (b - a) / 2 < tolerance:
+            if abs(fc) < tolerance and (b - a) / 2 < tolerance:
+                print("function value return:", abs(fc) < tolerance)
+                print("function argument return:", (b - a) / 2 < tolerance)
+
                 return c
 
             if fa * fc < 0:
@@ -71,18 +74,22 @@ class ZeroFinder:
         try:
             df_a = abs(self.derivative(self.a))
             df_b = abs(self.derivative(self.b))
-            # if df_a >= 1 or df_b >= 1:
-            #     raise ValueError(
-            #         "Derivative condition not satisfied (|f'| < 1 required)"
-            #     )
+            if df_a >= 1 or df_b >= 1:
+                print("Derivative condition not satisfied (|f'| < 1 required)")
 
             M = max(df_a, df_b)
             lam = 1 / M
+            print("lambda =", lam)
         except ZeroDivisionError:
             raise ValueError("Cannot compute λ - zero derivative at boundaries")
 
         phi = lambda x: x - lam * self.func(x)
         x_prev = x0
+
+        phi_prime = lambda x: 1 - lam * self.derivative(x)
+
+        print("phi'(a)=", phi_prime(self.a))
+        print("phi'(b)=", phi_prime(self.b))
 
         for iter_count in range(max_iterations):
             x_next = phi(x_prev)
@@ -99,7 +106,7 @@ class ZeroFinder:
                     }
                 )
 
-            if error < tolerance:
+            if error < tolerance and abs(self.func(x_next)) < tolerance:
                 return x_next
 
             x_prev = x_next

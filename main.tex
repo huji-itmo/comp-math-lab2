@@ -1,0 +1,72 @@
+
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{graphicx}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{amsmath}
+% \usepackage{xcolor}
+% \usepackage{array}
+\usepackage[left=2cm,right=2cm,top=1cm,bottom=0.5cm,bindingoffset=0cm]{geometry}
+% \usepackage{float}
+% \usepackage{wrapfig}
+% \usepackage{tabularx}
+\usepackage{nicematrix}
+\usepackage{multirow}
+\usepackage{multicol}
+\pagestyle{empty}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{stix}
+\usepackage{nicefrac}
+\usepackage[toc,page]{appendix}
+
+\usepackage[babel=true]{microtype}
+\usepackage{indentfirst}
+\usepackage{tempora}  % Times for numbers in math mode
+% \usepackage{newtxmath}  % Times in math mode
+
+\usepackage[nottoc]{tocbibind}
+\usepackage[toc,page]{appendix}
+\usepackage{pdfpages}
+\usepackage[rightcaption]{sidecap}
+\usepackage{cite}
+\usepackage[]{acronym}
+% \usepackage[pdftex,scale={.8,.8}]{geometry}
+% \usepackage[toc]{glossaries}
+\usepackage[left,pagewise,modulo]{lineno}
+\usepackage[colorlinks=false,hidelinks,pdfstartview=FitV]{hyperref}
+\usepackage[pagestyles,raggedright]{titlesec}
+\usepackage[export]{adjustbox}
+\usepackage{verbatim}
+\usepackage{dirtytalk}
+\usepackage{esvect}
+\usepackage{minted}
+% чтобы можно было делать больше матрицы
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+\title{Вычмат лаба 2}
+\author{Давид Григорьев}
+\date{March 2025}
+
+\begin{document}
+
+\input{Title}
+
+\newpage
+\tableofcontents
+
+\newpage
+
+\pagenumbering{arabic}
+
+\input{task}
+
+\end{document}

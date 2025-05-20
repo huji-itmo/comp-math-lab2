@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
+from system_solver import SystemSolver
 from zero_finder import ZeroFinder
 
 
@@ -141,4 +142,79 @@ def plot_simple_iteration(zero_finder: ZeroFinder):
     if zero_finder.plot_path:
         plt.savefig(f"{zero_finder.plot_path}simple_iteration.pdf", bbox_inches="tight")
         plt.savefig(f"{zero_finder.plot_path}simple_iteration.png", bbox_inches="tight")
+    plt.close()
+
+
+def plot_newton_system(solver):
+    """
+    Plot the convergence behavior of Newton's method for systems.
+
+    Parameters:
+    - solver: Instance of SystemSolver after running Newton's method
+    """
+    iterations = solver.iterations
+    delta_norms = [iter_data["delta_norm"] for iter_data in iterations]
+    f_norms = [iter_data["f_norm"] for iter_data in iterations]
+    iters = list(range(1, len(iterations) + 1))
+
+    plt.figure(figsize=(10, 5))
+    plt.semilogy(iters, delta_norms, label="||Δx||", marker="o")
+    plt.semilogy(iters, f_norms, label="||F(x)||", marker="s")
+    plt.xlabel("Iteration")
+    plt.ylabel("Norm")
+    plt.title("Convergence of Newton's Method for System of Equations")
+    plt.legend()
+    plt.grid(True)
+    if solver.output_dir:
+        plt.savefig(f"{solver.output_dir}newton_system_convergence.png")
+        plt.savefig(f"{solver.output_dir}newton_system_convergence.pdf")
+
+    plt.close()
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+
+def plot_system(solver: SystemSolver):
+
+    # Define the domain for x0 and x1
+    x0_values = np.linspace(-2, 2, 400)
+    x1_values = np.linspace(-2, 2, 400)
+
+    # Create a meshgrid for evaluating the functions over the domain
+    X, Y = np.meshgrid(x0_values, x1_values)
+
+    # Evaluate the two components of the system on the grid
+    Z1 = lambda x: solver.F(x)[0]
+    Z2 = lambda x: solver.F(x)[1]  # Second equation
+
+    # Create a new figure for the plot
+    plt.figure(figsize=(8, 6))
+
+    # Plot the zero-level contour for the first equation in red
+    contour1 = plt.contour(X, Y, Z1, levels=[0], colors="r", linewidths=2)
+
+    # Plot the zero-level contour for the second equation in blue
+    contour2 = plt.contour(X, Y, Z2, levels=[0], colors="b", linewidths=2)
+
+    # Add axis labels and title
+    plt.xlabel("x0")
+    plt.ylabel("x1")
+    plt.title("System of Equations:\n")
+    # Enable grid and set equal scaling for both axes
+    plt.grid(True)
+    plt.axis("equal")
+
+    # Ensure the directory exists
+    os.makedirs(solver.output_dir, exist_ok=True)
+
+    # Define the file path for saving the plot
+    plot_path = os.path.join(solver.output_dir, "system_plot.png")
+
+    # Save the plot to the specified directory
+    plt.savefig(plot_path, dpi=300)
+
+    # Close the plot to free up memory
     plt.close()
