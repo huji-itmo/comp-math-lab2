@@ -72,9 +72,9 @@ class ZeroFinder:
 
         # Validate contraction condition
         try:
-            df_a = abs(self.derivative(self.a))
-            df_b = abs(self.derivative(self.b))
-            if df_a >= 1 or df_b >= 1:
+            df_a = self.derivative(self.a)
+            df_b = self.derivative(self.b)
+            if abs(df_a) >= 1 or abs(df_b) >= 1:
                 print("Derivative condition not satisfied (|phi'| < 1 required)")
 
             M = max(df_a, df_b)
