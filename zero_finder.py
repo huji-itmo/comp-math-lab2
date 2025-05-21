@@ -75,7 +75,7 @@ class ZeroFinder:
             df_a = abs(self.derivative(self.a))
             df_b = abs(self.derivative(self.b))
             if df_a >= 1 or df_b >= 1:
-                print("Derivative condition not satisfied (|f'| < 1 required)")
+                print("Derivative condition not satisfied (|phi'| < 1 required)")
 
             M = max(df_a, df_b)
             print("M =", M)
