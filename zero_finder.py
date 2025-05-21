@@ -78,15 +78,19 @@ class ZeroFinder:
                 print("Derivative condition not satisfied (|f'| < 1 required)")
 
             M = max(df_a, df_b)
-            lam = 1 / M
+            print("M =", M)
+            if M < 0:
+                lam = -1 / M
+            else:
+                lam = 1 / M
             print("lambda =", lam)
         except ZeroDivisionError:
             raise ValueError("Cannot compute λ - zero derivative at boundaries")
 
-        phi = lambda x: x - lam * self.func(x)
+        phi = lambda x: x + lam * self.func(x)
         x_prev = x0
 
-        phi_prime = lambda x: 1 - lam * self.derivative(x)
+        phi_prime = lambda x: 1 + lam * self.derivative(x)
 
         print("phi'(a)=", phi_prime(self.a))
         print("phi'(b)=", phi_prime(self.b))

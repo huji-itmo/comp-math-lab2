@@ -52,9 +52,9 @@ class SystemSolver:
                 self.iterations.append(iteration_data)
 
             x += delta
+            print("step: ", delta)
 
             if np.linalg.norm(delta) < tolerance:
-
                 if debug:
                     iteration_data = {
                         "iteration": i + 1,

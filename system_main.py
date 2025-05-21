@@ -99,7 +99,7 @@ if __name__ == "__main__":
             tolerance=epsilon, max_iterations=max_iterations, debug=True
         )
         print(f"Root found: {root}")
-        print(f"value=", system_solver.F(root))
+        print(f"Function value at root=", system_solver.F(root))
         print(f"iterations=", len(system_solver.iterations))
 
         # Generate LaTeX table
